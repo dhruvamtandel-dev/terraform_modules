@@ -1,15 +1,16 @@
 module "vpc" {
-  source         = "./modules/vpc"
+  source = "./modules/vpc"
   vpc_name       = var.vpc_name
   vpc_cider      = var.vpc_cider
+  # vpcs           = var.vpcs
   private_subnet = var.private_subnet
   public_subnet  = var.public_subnet
   db_subnet      = var.db_subnet
 }
 
 module "security_groups" {
-  source = "./modules/sg"
-  vpc_id = module.vpc.vpc_id
+  source          = "./modules/sg"
+  vpc_id          = module.vpc.vpc_id
   security_groups = var.security_groups
 }
 

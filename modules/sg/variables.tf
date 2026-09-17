@@ -11,7 +11,7 @@ variable "security_groups" {
       ip_protocol         = string
       cidr_block          = optional(string)
       security_groups_key = optional(string)
-      prefix_list_ids      = optional(list(string),[])
+      prefix_list_ids     = optional(list(string), [])
     }))
 
     egress_rules = optional(list(object({
@@ -20,14 +20,14 @@ variable "security_groups" {
       ip_protocol         = string
       cidr_block          = optional(string)
       security_groups_key = optional(string)
-      prefix_list_ids      = optional(list(string),[])
+      prefix_list_ids     = optional(list(string), [])
     })))
   }))
   description = "all the security groups with the ingress rules and egress rules"
 }
 
 variable "suffix_sg_name" {
-  type = string
-  default = "security-groups"
+  type        = string
+  default     = "security-groups"
   description = "Add after the key of security_group variable for sg name"
 }
