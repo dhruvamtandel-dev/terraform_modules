@@ -10,8 +10,4 @@ locals {
     key => subnet
     if subnet.nat_associate == true
   }
-
-#   public_route_table_vpcs = toset([
-#     for key, subnet in var.public_subnet : aws_subnet.vpc_public_subnet[subnet.vpc_name]
-#   ])
 }

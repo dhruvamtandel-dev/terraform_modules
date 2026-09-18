@@ -2,7 +2,6 @@ module "vpc" {
   source = "./modules/vpc"
   vpc_name       = var.vpc_name
   vpc_cider      = var.vpc_cider
-  # vpcs           = var.vpcs
   private_subnet = var.private_subnet
   public_subnet  = var.public_subnet
   db_subnet      = var.db_subnet
@@ -12,6 +11,19 @@ module "security_groups" {
   source          = "./modules/sg"
   vpc_id          = module.vpc.vpc_id
   security_groups = var.security_groups
+}
+
+
+module "Application_load_balancer" {
+  source = "./modules/lb"
+  lb_name = var.lb_name
+  internal = var.internal
+  load_balancer_type = var.load_balancer_type
+  load_balancer_sg_ids = local.lb_security_groups_ids
+  load_balancer_subnet = local.lb_subnets_ids
+  vpc_id = local.lb_vpc_id
+  target_groups = var.target_groups
+  listeners = var.listeners
 }
 
 

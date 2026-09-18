@@ -50,47 +50,6 @@ variable "db_subnet" {
 }
 
 
-# variable "vpcs" {
-#   type = map(object({
-#     name       = string
-#     cidr_block = string
-#   }))
-#   description = "map of vpc with there Name and cidr"
-# }
-
-# variable "public_subnet" {
-#   type = map(object({
-#     vpc_name          = string
-#     cidr_block        = string
-#     availability_zone = string
-#     nat_creation      = optional(bool, false)
-#     map_public_ip     = optional(bool, true)
-#   }))
-#   description = "public subnets for vpc"
-# }
-
-
-# variable "private_subnet" {
-#   type = map(object({
-#     vpc_name          = string
-#     cidr_block        = string
-#     availability_zone = string
-#     nat_associate     = optional(bool, false)
-#   }))
-#   description = "private subnets for vpc"
-# }
-
-# variable "db_subnet" {
-#   type = map(object({
-#     vpc_name          = string
-#     cidr_block        = string
-#     availability_zone = string
-#   }))
-#   description = "database subnets for vpc"
-# }
-
-
-
 // Security Groups
 
 variable "security_groups" {
@@ -114,4 +73,66 @@ variable "security_groups" {
     })))
   }))
   description = "all the security groups with the ingress rules and egress rules"
+}
+
+
+// alb
+
+variable "lb_name" {
+    type = string
+    description = "Name of the load balancer"
+}
+
+variable "internal" {
+    type = bool
+    description = "true if internal flase if external"
+}
+
+variable "load_balancer_type" {
+  type = string
+  description = "type of the load balancer"
+}
+
+variable "load_balancer_subnet" {
+  type = list(string)
+  description = "value"
+}
+
+
+variable "target_group_resource_prefix" {
+  description = "Prefix for target group names."
+  type        = string
+  default     = "alb-tg"
+}
+
+variable "target_groups" {
+  description = "Map of target groups to create."
+
+  type = map(object({
+    port              = number
+    protocol          = string
+    target_type       = string
+    health_check_path = optional(string, "/")
+    health_check = optional(object({
+      enabled             = optional(bool, true)
+      healthy_threshold   = optional(number, 3)
+      unhealthy_threshold = optional(number, 3)
+      timeout             = optional(number, 5)
+      interval            = optional(number, 30)
+      matcher             = optional(string, "200")
+    }), {})
+  }))
+
+  default = {}
+}
+variable "listeners" {
+  type = map(object({
+    port     = number
+    protocol = string
+
+    forward = list(object({
+      target_name = string
+      weight      = number
+    }))
+  }))
 }

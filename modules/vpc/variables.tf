@@ -8,17 +8,9 @@ variable "vpc_name" {
   description = "name of the vpc"
 }
 
-# variable "vpcs" {
-#   type = map(object({
-#     name       = string
-#     cidr_block = string
-#   }))
-#   description = "map of vpc with there Name and cidr"
-# }
-
 variable "public_subnet" {
   type = map(object({
-    # vpc_name          = string
+
     cidr_block        = string
     availability_zone = string
     nat_creation      = optional(bool, false)
@@ -30,7 +22,7 @@ variable "public_subnet" {
 
 variable "private_subnet" {
   type = map(object({
-    # vpc_name          = string
+
     cidr_block        = string
     availability_zone = string
     nat_associate     = optional(bool, false)
@@ -40,7 +32,7 @@ variable "private_subnet" {
 
 variable "db_subnet" {
   type = map(object({
-    # vpc_name          = string
+
     cidr_block        = string
     availability_zone = string
   }))

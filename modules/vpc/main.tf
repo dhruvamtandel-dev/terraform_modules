@@ -6,15 +6,6 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-# resource "aws_vpc" "vpcs" {
-#   for_each = var.vpcs
-
-#   cidr_block = each.value.cidr_block
-#   tags = {
-#     Name = each.value.name
-#   }
-# }
-
 resource "aws_internet_gateway" "vpc_igw" {
   count = length(var.public_subnet) > 0 ? 1 : 0
 
@@ -28,7 +19,6 @@ resource "aws_internet_gateway" "vpc_igw" {
 resource "aws_subnet" "vpc_public_subnet" {
   for_each = var.public_subnet
 
-  # vpc_id                  = aws_vpc.vpc[each.value.vpc_name].id
   vpc_id = aws_vpc.vpc.id
   cidr_block              = each.value.cidr_block
   availability_zone       = each.value.availability_zone
@@ -43,7 +33,6 @@ resource "aws_subnet" "vpc_public_subnet" {
 resource "aws_subnet" "vpc_private_subnet" {
   for_each = var.private_subnet
 
-  # vpc_id            = aws_vpc.vpc[each.value.vpc_name].id
   vpc_id = aws_vpc.vpc.id
   cidr_block        = each.value.cidr_block
   availability_zone = each.value.availability_zone
@@ -52,7 +41,6 @@ resource "aws_subnet" "vpc_private_subnet" {
     Name = each.key
   }
 }
-
 
 resource "aws_route" "route_igw" {
   count = length(var.public_subnet) > 0 ? 1 : 0
@@ -83,7 +71,6 @@ resource "aws_nat_gateway" "this" {
 
 resource "aws_route_table" "public_route_table" {
   count = length(var.public_subnet) > 0 ? 1 : 0
-  # for_each = local.public_route_table_vpcs
 
   vpc_id = aws_vpc.vpc.id
   tags = {
@@ -128,8 +115,6 @@ resource "aws_route_table_association" "private_nat" {
 resource "aws_subnet" "db_subnet" {
   for_each = var.db_subnet
 
-  # vpc_id = aws_vpc.vpc[each.value.vpc_name].id
-  # vpc_id = aws_vpc.vpcs
   vpc_id = aws_vpc.vpc.id
 
   availability_zone = each.value.availability_zone
