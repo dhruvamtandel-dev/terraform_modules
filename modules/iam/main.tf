@@ -1,40 +1,34 @@
-
-resource "aws_iam_role" "example" {
-  name               = "yak_role"
-  assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json # (not shown)
-
-  inline_policy {
-    name = "my_inline_policy"
-
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action   = ["ec2:Describe*"]
-          Effect   = "Allow"
-          Resource = "*"
-        },
-      ]
-    })
-  }
-
-  inline_policy {
-    name   = "policy-8675309"
-    policy = file("./policy.json")
+data "aws_iam_policy_document" "this" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    effect = "Allow"
+    dynamic "principals" {
+      for_each = var.assume_policy_principals
+      content {
+        type        = principals.value.type
+        identifiers = principals.value.identifiers
+      }
+    }
   }
 }
 
-resource "aws_iam_policy" "policy_one" {
-  name = "policy-618033"
+resource "aws_iam_role" "this" {
+  name               = var.role_name
+  assume_role_policy = data.aws_iam_policy_document.this.json
+}
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = ["ec2:Describe*"]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
+data "aws_iam_policy_document" "policy_documents" {
+    source_policy_documents = var.role_policy_document
+}
+
+resource "aws_iam_role_policy" "this" {
+  role   = aws_iam_role.this.id
+  policy = data.aws_iam_policy_document.policy_documents.json
+}
+
+resource "aws_iam_role_policy_attachment" "this" {
+  for_each = var.policys_to_attach
+
+  role       = aws_iam_role.this.name
+  policy_arn = each.value
 }

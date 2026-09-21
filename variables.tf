@@ -79,25 +79,29 @@ variable "security_groups" {
 // alb
 
 variable "lb_name" {
-    type = string
-    description = "Name of the load balancer"
+  type        = string
+  description = "Name of the load balancer"
 }
 
 variable "internal" {
-    type = bool
-    description = "true if internal flase if external"
+  type        = bool
+  description = "true if internal flase if external"
 }
 
 variable "load_balancer_type" {
-  type = string
+  type        = string
   description = "type of the load balancer"
 }
 
 variable "load_balancer_subnet" {
-  type = list(string)
+  type        = list(string)
   description = "value"
 }
 
+variable "load_balancer_sg" {
+  type = list(string)
+  description = "List of the name of load balancer security group name"
+}
 
 variable "target_group_resource_prefix" {
   description = "Prefix for target group names."
@@ -130,9 +134,117 @@ variable "listeners" {
     port     = number
     protocol = string
 
-    forward = list(object({
+    target_groups = list(object({
       target_name = string
       weight      = number
     }))
   }))
+}
+
+
+// iam 
+
+variable "assume_policy_principals" {
+  type = map(object({
+      type        = string
+      identifiers = list(string)
+    }))
+  
+  description = "priciples which need to assume this role"
+}
+
+
+variable "role_name" {
+  type        = string
+  description = "Name of the role"
+}
+
+
+variable "policys_to_attach" {
+  type        = set(string)
+  default     = []
+  description = "arns of the policy which need to be attach to the role"
+}
+
+
+variable "role_policy_document" {
+  type = list(string)
+  default = []
+  description = "inline policy document which need to attach to the role."
+}
+
+// auto-scaling-group
+
+variable "ec2_instance_profile" {
+    type = object({
+    name = string
+    role = string
+    })
+}
+
+variable "launch_template_name_prefix" {
+  type = string
+  description = "Prefix to add in the launch template name"
+}
+
+variable "image_id" {
+    type = string
+    description = "Ami id for the launch template"
+}
+
+variable "instance_type" {
+  type = string
+  description = "Type of the instance for launch template"
+}
+
+
+variable "monitoring_enable" {
+  type = bool
+  description = "True if need to enable monitoring in ec2 or false is dont want monitoring"
+}
+
+variable "launch_template_sg" {
+  type = list(string)
+  description = "Name of the security groups for launch template"
+}
+
+
+variable "launch_templete_tag" {
+  type = map(map(string))
+  description = "All the tags which is attach to the ec2 which created with this launch tmeplete"
+}
+
+variable "user_data_for_launch_template" {
+  type = string
+  description = "User data script to add to the launch template"
+}
+
+variable "asg_name" {
+    type = string
+    description = "Name of the auto-scaling group"
+}
+
+variable "asg_max_size" {
+    type = number
+    description = "Maximum number of instance to be launch during scaling"
+}
+
+variable "asg_min_size" {
+    type = number
+    description = "Minimum number of instance to be launch in auto-scaling group"
+}
+
+variable "asg_desired_capacity" {
+    type = number
+    description = "Desired number of instance need to be launch in the auto-scaling group" 
+}
+
+variable "asg_health_check_type" {
+    type = string
+    description = "Type of health check in auto-scaling group"
+}
+
+variable "health_check_grace_period" {
+    type = number
+    description = "Grace period for auto-scaling group"
 }

@@ -3,7 +3,7 @@ output "dns" {
 }
 
 output "target_group_arn" {
-    value = {
-        for key,value in aws_aws_lb_target_group.alb_tg : key => value.arn 
-    }
+  value = {
+    for key, value in aws_lb_target_group.alb_tg : key => value.arn
+  }
 }

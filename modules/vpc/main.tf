@@ -19,7 +19,7 @@ resource "aws_internet_gateway" "vpc_igw" {
 resource "aws_subnet" "vpc_public_subnet" {
   for_each = var.public_subnet
 
-  vpc_id = aws_vpc.vpc.id
+  vpc_id                  = aws_vpc.vpc.id
   cidr_block              = each.value.cidr_block
   availability_zone       = each.value.availability_zone
   map_public_ip_on_launch = each.value.map_public_ip
@@ -33,7 +33,7 @@ resource "aws_subnet" "vpc_public_subnet" {
 resource "aws_subnet" "vpc_private_subnet" {
   for_each = var.private_subnet
 
-  vpc_id = aws_vpc.vpc.id
+  vpc_id            = aws_vpc.vpc.id
   cidr_block        = each.value.cidr_block
   availability_zone = each.value.availability_zone
 

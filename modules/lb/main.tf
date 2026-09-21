@@ -5,8 +5,6 @@ resource "aws_lb" "alb" {
   security_groups    = var.load_balancer_sg_ids
   subnets            = var.load_balancer_subnet
 }
-
-
 resource "aws_lb_target_group" "alb_tg" {
   for_each = var.target_groups
 
@@ -39,10 +37,9 @@ resource "aws_lb_listener" "lb_listener" {
 
   default_action {
     type = "forward"
-
     forward {
       dynamic "target_group" {
-        for_each = each.value.forward
+        for_each = each.value.target_groups
 
         content {
           arn    = aws_lb_target_group.alb_tg[target_group.value.target_name].arn
@@ -51,9 +48,4 @@ resource "aws_lb_listener" "lb_listener" {
       }
     }
   }
-}
-
-
-output "dns" {
-  value = aws_lb.alb.dns_name
 }

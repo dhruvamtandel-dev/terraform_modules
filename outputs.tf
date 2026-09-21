@@ -1,11 +1,3 @@
-output "vpc_id" {
-  value = module.vpc.vpc_id
-}
-
-output "sg_ids" {
-  value = local.server_sg_ids
-}
-
-output "sg" {
-  value = module.security_groups.sg
+output "load_balancer_dns" {
+  value = module.application_load_balancer.dns
 }

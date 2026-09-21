@@ -1,25 +1,25 @@
 variable "lb_name" {
-    type = string
-    description = "Name of the load balancer"
+  type        = string
+  description = "Name of the load balancer"
 }
 
 variable "internal" {
-    type = bool
-    description = "true if internal flase if external"
+  type        = bool
+  description = "true if internal flase if external"
 }
 
 variable "load_balancer_type" {
-  type = string
+  type        = string
   description = "type of the load balancer"
 }
 
 variable "load_balancer_sg_ids" {
-  type = list(string)
+  type        = list(string)
   description = "ids of the security groups for the load balancer"
 }
 
 variable "load_balancer_subnet" {
-  type = list(string)
+  type        = list(string)
   description = "value"
 }
 
@@ -59,7 +59,7 @@ variable "listeners" {
     port     = number
     protocol = string
 
-    forward = list(object({
+    target_groups = list(object({
       target_name = string
       weight      = number
     }))
