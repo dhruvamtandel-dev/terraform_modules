@@ -1,7 +1,7 @@
 data "aws_iam_policy_document" "this" {
   statement {
     actions = ["sts:AssumeRole"]
-    effect = "Allow"
+    effect  = "Allow"
     dynamic "principals" {
       for_each = var.assume_policy_principals
       content {
@@ -18,7 +18,7 @@ resource "aws_iam_role" "this" {
 }
 
 data "aws_iam_policy_document" "policy_documents" {
-    source_policy_documents = var.role_policy_document
+  source_policy_documents = var.role_policy_document
 }
 
 resource "aws_iam_role_policy" "this" {

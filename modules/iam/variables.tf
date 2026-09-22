@@ -1,10 +1,10 @@
 
 variable "assume_policy_principals" {
   type = map(object({
-      type        = string
-      identifiers = list(string)
-    }))
-  
+    type        = string
+    identifiers = list(string)
+  }))
+
   description = "priciples which need to assume this role"
 }
 
@@ -22,7 +22,7 @@ variable "policys_to_attach" {
 
 
 variable "role_policy_document" {
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "inline policy document which need to attach to the role."
 }

@@ -22,7 +22,7 @@ resource "aws_launch_template" "ec2_launch_templete" {
     for_each = var.launch_templete_tag
     content {
       resource_type = tag_specifications.key
-      tags = tag_specifications.value
+      tags          = tag_specifications.value
     }
   }
   user_data = base64encode(var.user_data_for_launch_template)
@@ -46,4 +46,17 @@ resource "aws_autoscaling_group" "asg" {
   vpc_zone_identifier = var.asg_subnets
 
   target_group_arns = var.target_group_arns
+}
+
+resource "aws_autoscaling_policy" "asg_scaling_policy" {
+  name = var.asg_scaling_policy_name
+  autoscaling_group_name = aws_autoscaling_group.asg.name
+  policy_type = var.scaling_policy_type
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = var.autoscaling_policy_predefined_metric_type
+    }
+    target_value = var.target_value_for_scaling
+  }
 }
