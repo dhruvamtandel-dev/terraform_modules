@@ -49,9 +49,9 @@ resource "aws_autoscaling_group" "asg" {
 }
 
 resource "aws_autoscaling_policy" "asg_scaling_policy" {
-  name = var.asg_scaling_policy_name
+  name                   = var.asg_scaling_policy_name
   autoscaling_group_name = aws_autoscaling_group.asg.name
-  policy_type = var.scaling_policy_type
+  policy_type            = var.scaling_policy_type
 
   target_tracking_configuration {
     predefined_metric_specification {

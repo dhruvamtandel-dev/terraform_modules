@@ -18,13 +18,23 @@ resource "aws_iam_role" "this" {
 }
 
 data "aws_iam_policy_document" "policy_documents" {
-  source_policy_documents = var.role_policy_document
+  source_policy_documents = var.role_policy_documents
 }
 
 resource "aws_iam_role_policy" "this" {
   role   = aws_iam_role.this.id
   policy = data.aws_iam_policy_document.policy_documents.json
 }
+
+# resource "aws_iam_policy" "policy" {
+#   name = "${var.role_name}-policy"
+#   policy = jsonencode(var.role_policy)
+# }
+
+# resource "aws_iam_role_policy_attachment" "policy_attachment_role" {
+#   role = aws_iam_role.this.name
+#   policy_arn = aws_iam_policy.policy.arn
+# }
 
 resource "aws_iam_role_policy_attachment" "this" {
   for_each = var.policys_to_attach

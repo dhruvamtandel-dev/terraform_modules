@@ -82,23 +82,23 @@ variable "target_group_arns" {
 
 
 variable "asg_scaling_policy_name" {
-  type = string
+  type        = string
   description = "Name of the auto-scaling policy name"
 }
 
 variable "scaling_policy_type" {
-  type = string
-  default = "TargetTrackingScaling"
+  type        = string
+  default     = "TargetTrackingScaling"
   description = "Type of the scaling policy"
 }
 
 variable "autoscaling_policy_predefined_metric_type" {
-  type = string
+  type        = string
   description = "Type of the predifined metric for the scaling policy"
 }
 
 variable "target_value_for_scaling" {
-  type = number
+  type        = number
   description = "Target value for scaling"
-  
+
 }

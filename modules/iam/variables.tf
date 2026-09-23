@@ -20,8 +20,12 @@ variable "policys_to_attach" {
   description = "arns of the policy which need to be attach to the role"
 }
 
+# variable "role_policy" {
+#   type = string
+#   description = "Policy to attach with role"
+# }
 
-variable "role_policy_document" {
+variable "role_policy_documents" {
   type        = list(string)
   default     = []
   description = "inline policy document which need to attach to the role."
